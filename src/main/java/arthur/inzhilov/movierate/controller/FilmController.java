@@ -181,7 +181,19 @@ public class FilmController {
                                 Model model) {
         model.addAttribute("user", user);
         model.addAttribute("films", filmService.findFilmsBySearchTerm(searchDto.getSearchTerm()));
+        model.addAttribute("searchDto", searchDto);
         model.addAttribute("filmDto", new FilmDto());
-        return "films/films.html";
+        return "films/searched.html";
+    }
+
+    @GetMapping(value = "recommended")
+    public String recommendedFilms(@Valid SearchDto searchDto,
+                                @AuthenticationPrincipal UserDetails user,
+                                Model model) {
+        model.addAttribute("user", user);
+        model.addAttribute("films",
+                filmRatingService.getRecommendedFilms(userService.getUserDtoByUsername(user.getUsername()).getId()));
+        model.addAttribute("filmDto", new FilmDto());
+        return "films/recommended.html";
     }
 }

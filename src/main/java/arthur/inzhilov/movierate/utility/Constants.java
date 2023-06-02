@@ -7,7 +7,9 @@ import java.util.Set;
 
 public class Constants {
 
-    public static final LocalDate MIN_FILM_RELEASE_DATE = LocalDate.of(1895, 12, 28);
+    public final static Integer NUMBER_OF_RECOMMENDED_FILMS = 5;
+
+    public final static LocalDate MIN_FILM_RELEASE_DATE = LocalDate.of(1895, 12, 28);
 
     public final static Set<Integer> RATINGS = Set.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 

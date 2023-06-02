@@ -1,11 +1,11 @@
 package arthur.inzhilov.movierate.service;
 
+import arthur.inzhilov.movierate.dao.FilmRepository;
+import arthur.inzhilov.movierate.dao.GenreRepository;
 import arthur.inzhilov.movierate.dto.FilmDto;
 import arthur.inzhilov.movierate.entity.FilmEntity;
 import arthur.inzhilov.movierate.entity.GenreEntity;
 import arthur.inzhilov.movierate.exception.NotFoundException;
-import arthur.inzhilov.movierate.dao.FilmRepository;
-import arthur.inzhilov.movierate.dao.GenreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +28,7 @@ public class FilmService {
 
     public List<FilmDto> getFilms() {
         return filmRepository.findAll().stream()
-                .map(this::mapFilmEntityToFilmDto)
+                .map(FilmService::mapFilmEntityToFilmDto)
                 .collect(Collectors.toList());
     }
 
@@ -93,11 +93,11 @@ public class FilmService {
     public List<FilmDto> findFilmsBySearchTerm(String searchTerm) {
         return filmRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(searchTerm, searchTerm)
                 .stream()
-                .map(this::mapFilmEntityToFilmDto)
+                .map(FilmService::mapFilmEntityToFilmDto)
                 .collect(Collectors.toList());
     }
 
-    private FilmDto mapFilmEntityToFilmDto(FilmEntity filmEntity) {
+    public static FilmDto mapFilmEntityToFilmDto(FilmEntity filmEntity) {
         return FilmDto.builder()
                 .id(filmEntity.getId())
                 .name(filmEntity.getName())
@@ -109,5 +109,4 @@ public class FilmService {
                 .genre(filmEntity.getGenre())
                 .build();
     }
-
 }
