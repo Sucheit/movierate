@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html layout:decorate="layouts/defaultLayout.html" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+<div class="container my-5" layout:fragment="content">
+    <div class="container mt-3 mb-3">
+        <form th:action="@{searchedFilms}" action="#" method="post" th:object="${searchDto}">
+            <div class="mb-3">
+                <label for="searchFormInput" class="form-label">Поиск фильма по названию или описанию</label>
+                <input th:field="*{searchTerm}" type="text" class="form-control" id="searchFormInput"
+                       aria-describedby="searchFormHelp">
+                <div id="searchFormHelp" class="form-text">Введите фразу</div>
+                <button type="submit" class="btn btn-primary">Искать</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

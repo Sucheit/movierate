@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html layout:decorate="layouts/adminLayout.html" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+<div class="container my-5" layout:fragment="content">
+
+    <h2 style="text-align:center;">Список фильмов</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th></th>
+            <th scope="col">Название</th>
+            <th scope="col">Описание</th>
+            <th scope="col">Жанр</th>
+            <th scope="col">Длительность(мин.)</th>
+            <th scope="col">Дата выхода</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="film : ${films}">
+            <td scope="row"><img alt="" th:src="*{'data:image/jpeg;base64,'+{film.image}}" style="width: 150px;height: 200px;" src=""></td>
+            <td th:text="${film.name}">Название</td>
+            <td th:text="${film.description}">Описание</td>
+            <td th:text="${film.genre.name}">Жанр</td>
+            <td th:text="${film.duration}">Длительность(мин.)</td>
+            <td th:text="${film.releaseDate}">Дата выхода</td>
+            <td>
+                <form action="#" method="get" th:action="@{/adminUpdateFilm}" th:object="${filmDto}">
+                    <input name="id" type="hidden" th:value="${film.id}">
+                    <input name="name" type="hidden" th:value="${film.name}">
+                    <input name="description" type="hidden" th:value="${film.description}">
+                    <input name="releaseDate" type="hidden" th:value="${film.releaseDate}">
+                    <input name="duration" type="hidden" th:value="${film.duration}">
+                    <input name="genreId" type="hidden" th:value="${film.genre.id}">
+                    <input name="image" type="hidden" th:value="${film.image}">
+                    <button class="btn btn-secondary" type="submit">Редактировать</button>
+                </form>
+            </td>
+            <td>
+                <form action="#" method="post" th:action="@{/adminDeleteFilm}" th:object="${filmDto}">
+                    <input name="id" type="hidden" th:value="${film.id}">
+                    <button class="btn btn-danger" type="submit">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>

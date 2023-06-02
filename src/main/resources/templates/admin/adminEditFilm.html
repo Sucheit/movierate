@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html layout:decorate="layouts/adminLayout.html"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+<div class="container my-5" layout:fragment="content">
+
+    <div class="container mt-3 mb-3">
+
+        <h1 style="text-align:center;">Форма редактирование фильма:</h1>
+
+        <form th:action="@{/adminDoUpdateFilm}" action="#" method="post" th:object="${filmDto}"
+              enctype="multipart/form-data">
+
+            <input name="id" type="hidden" th:value="${filmDto.id}">
+
+            <div class="mb-3">
+                <label for="name" class="form-label">Название</label>
+                <input th:field="*{name}" type="text" class="form-control" id="name"
+                       aria-describedby="usernameHelp">
+                <div id="nameHelp" class="form-text">Название фильма не должно быть пустым. Макс. длина 50 символов.
+                </div>
+                <p class="alert alert-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Описание</label>
+                <input th:field="*{description}" type="text" class="form-control" id="description"
+                       aria-describedby="descriptionHelp">
+                <div id="descriptionHelp" class="form-text">Описание фильма не может быть пустым. Макс. длина 1000
+                    символов.
+                </div>
+                <p class="alert alert-danger" th:if="${#fields.hasErrors('description')}"
+                   th:errors="*{description}"></p>
+            </div>
+
+            <div class="mb-3">
+                <label for="duration" class="form-label">Длительность(мин.)</label>
+                <input th:field="*{duration}" type="text" class="form-control" id="duration"
+                       aria-describedby="durationHelp">
+                <div id="durationHelp" class="form-text">Длительность не может быть отрицательной.</div>
+                <p class="alert alert-danger" th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}"></p>
+            </div>
+
+            <div class="mb-3">
+                <label for="releaseDate" class="form-label">Дата релиза</label>
+                <input th:field="*{releaseDate}" type="text" class="form-control" id="releaseDate"
+                       aria-describedby="releaseDateHelp">
+                <div id="releaseDateHelp" class="form-text">Дата должна быть в формате 'дд.MM.гггг', позже 28.12.1895.</div>
+                <p class="alert alert-danger" th:if="${#fields.hasErrors('releaseDate')}"
+                   th:errors="*{releaseDate}"></p>
+            </div>
+
+            <div class="mb-3" th:if="${filmDto.genreId != null}">
+                <p>Текущий жанр: <span th:text="${genres[filmDto.genreId - 1].name}"></span></p>
+            </div>
+
+            <div class="mb-3">
+                <label>Выберите жанр:</label>
+                <select th:field="*{genreId}">
+                    <option th:each="genre : ${genres}"
+                            th:value="${genre.id}"
+                            th:text="${genre.name}">
+                    </option>
+                </select>
+                <input type="hidden" name="genreId" id="genreId">
+            </div>
+
+<!--            <h3>Таблица жанров</h3>-->
+<!--            <table class="table table-striped">-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--                <th scope="col">Id жанра</th>-->
+<!--                <th scope="col">Название</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr th:each="genre : ${genres}">-->
+<!--                <td th:text="${genre.id}">Id жанра</td>-->
+<!--                <td th:text="${genre.name}">Название</td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--            </table>-->
+
+
+<!--            <div class="mb-3">-->
+<!--                <label for="genreId" class="form-label">Жанр id</label>-->
+<!--                <input th:field="*{genreId}" type="text" class="form-control" id="genreId"-->
+<!--                       aria-describedby="genreIdHelp">-->
+<!--                <div id="genreDateHelp" class="form-text">Жанр id должен быть из списка</div>-->
+<!--                <p class="alert alert-danger" th:if="${#fields.hasErrors('genreId')}" th:errors="*{genreId}"></p>-->
+<!--            </div>-->
+
+            <div th:if="${filmDto.image != null}">
+                <p>Текущий постер</p>
+                <img alt="" th:src="${'data:image/jpeg;base64,'+{filmDto.image}}"
+                     style="width: 400px;height: 500px;" src="">
+            </div>
+
+            <input name="image" type="hidden" th:value="${filmDto.image}">
+
+            <div class="custom-file mb-4">
+                <input th:field="*{file}" type="file" name="file" class="custom-file-input" id="file" value="Загрузить"
+                       placeholder="Загрузить">
+                <label class="custom-file-label" for="file">Загрузить новый постер</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Редактировать</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="layouts/defaultLayout.html" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+<div layout:fragment="content">
+    <div class="container mt-3 mb-3">
+        <form th:action="@{addUser}" action="#" method="post" th:object="${userDto}">
+            <h2 style="text-align:center;">Регистрация</h2>
+            <div class="mb-3">
+                <label for="username" class="form-label">Имя пользователя</label>
+                <input th:field="*{username}" type="text" class="form-control" id="username"
+                       aria-describedby="usernameHelp">
+                <div id="usernameHelp" class="form-text">Имя пользователя должно быть от 3 до 20 символов.</div>
+                <p class="alert alert-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Электронная почта</label>
+                <input th:field="*{email}" type="text" class="form-control" id="email"
+                       aria-describedby="emailHelp">
+                <div id="emailHelp" class="form-text"></div>
+                <p class="alert alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Пароль</label>
+                <input th:field="*{password}" type="password" class="form-control" id="password"
+                       aria-describedby="priorityHelp">
+                <div id="passwordHelp" class="form-text">Пароль должен быть от 6 до 20 символов.</div>
+                <p class="alert alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+            </div>
+
+            <button type="submit" class="btn btn-primary" value="Зарегистрироваться">Зарегистрироваться</button>
+        </form>
+    </div>
+</div>
+</html>

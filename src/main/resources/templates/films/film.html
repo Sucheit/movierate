@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html layout:decorate="layouts/defaultLayout.html"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+<div class="container my-5" layout:fragment="content">
+
+    <div align="center" class="mb-3">
+
+        <div>
+        <img align="center" alt="" th:src="${'data:image/jpeg;base64,'+{filmEntityCurr.image}}"
+             style="width: 400px;height: 600px;" src="">
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Название</th>
+                <th scope="col">Описание</th>
+                <th scope="col">Жанр</th>
+                <th scope="col">Длительность(мин.)</th>
+                <th scope="col">Дата выхода</th>
+                <th scope="col">Средний рейтинг</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${filmEntityCurr.name}">Название</td>
+                <td th:text="${filmEntityCurr.description}">Описание</td>
+                <td th:text="${filmEntityCurr.genre.name}">Жанр</td>
+                <td th:text="${filmEntityCurr.duration}">Длительность(мин.)</td>
+                <td th:text="${filmEntityCurr.releaseDate}">Дата выхода</td>
+                <td th:object="${rating}" th:text="${rating}">Средний рейтинг</td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <div align="center" class="mb-3">
+        <div th:if="${user == null}">
+            <p>Чтобы поставить оценку фильму или оставить отзыв необходимо <a href="/login">войти</a></p>
+        </div>
+
+        <div th:if="${user != null && filmRatingEntity == null}">
+            <p>Вы еще не поставили оценку</p>
+
+            <form th:action="@{/updateRating}" action="#" method="post" th:object="${filmRatingDto}">
+
+                <div>
+                    <label>Выберите оценку:</label>
+                    <select th:field="*{rating}">
+                        <option th:each="rating : ${ratings}"
+                                th:value="${rating}"
+                                th:text="${rating}">
+                        </option>
+                    </select>
+                    <input type="hidden" name="filmId" th:value="${filmEntityCurr.id}">
+                </div>
+                <input class="btn btn-primary" type="submit" value="Поставить оценку">
+            </form>
+
+        </div>
+        <div th:if="${user != null && filmRatingEntity != null}" th:object="${filmRatingEntity}">
+            <p>Ваша оценка фильму: <span th:text="${filmRatingEntity.rating}"></span> из 10</p>
+
+            <form th:action="@{/updateRating}" action="#" method="post" th:object="${filmRatingDto}">
+
+                <div>
+                    <label>Выберите оценку:</label>
+                    <select th:field="*{rating}">
+                        <option th:each="rating : ${ratings}"
+                                th:value="${rating}"
+                                th:text="${rating}">
+                        </option>
+                    </select>
+                    <input type="hidden" name="filmId" th:value="${filmEntityCurr.id}">
+                </div>
+                <input class="btn btn-primary" type="submit" value="Изменить оценку">
+            </form>
+        </div>
+
+        <div align="center" class="mb-3">
+            <div th:if="${user != null}">
+                <div th:if="${reviewDto == null}">
+                    <form th:action="@{/addReview}" action="#" method="post" th:object="${reviewDtoNew}">
+                        <div>
+                            <div class="mb-3">
+                                <label for="text" class="form-label">Ваш отзыв:</label>
+                                <textarea rows="3" cols="80" th:field="*{text}" class="form-control" id="text"
+                                          aria-describedby="textHelp"></textarea>
+                                <div id="textHelp" class="form-text"></div>
+                                <p class="alert alert-danger" th:if="${#fields.hasErrors('text')}"
+                                   th:errors="*{text}"></p>
+                            </div>
+                            <input type="hidden" name="filmId" th:value="${filmEntityCurr.id}">
+                            <input type="hidden" name="userId" th:value="${user.id}">
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="Оставить отзыв">
+                    </form>
+                </div>
+                <div th:if="${reviewDto != null}">
+                    <form th:action="@{/updateReview}" action="#" method="post" th:object="${reviewDto}">
+                        <div>
+                            <div class="mb-3">
+                                <label for="text2" class="form-label">Ваш отзыв</label>
+                                <textarea rows="3" cols="80" th:field="*{text}" class="form-control"
+                                          id="text2"
+                                          aria-describedby="textHelp2"></textarea>
+                                <div id="textHelp2" class="form-text"></div>
+                                <p class="alert alert-danger" th:if="${#fields.hasErrors('text')}"
+                                   th:errors="*{text}"></p>
+                            </div>
+                            <input type="hidden" name="id" th:value="${reviewDto.id}">
+                            <input type="hidden" name="filmId" th:value="${filmEntityCurr.id}">
+                            <input type="hidden" name="userId" th:value="${userEntity.id}">
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="Отредактировать отзыв">
+                        <button class="btn btn-danger" type="submit" th:formaction="@{/deleteReview}">Удалить отзыв
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div align="center" class="mb-3" th:if="${comments.size() == 0}">
+        <p>У фильма пока нет отзывов</p>
+    </div>
+    <div align="center" class="mb-3" th:if="${comments.size() != 0}">
+        <p>Все Отзывы:</p>
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-dark" th:each="comment : ${comments}">
+                <p style="display: inline-block;" th:text="*{comment.user.username}">Имя пользователя</p>
+                <p style="display: inline-block;" th:text="*{comment.postDate}">Дата комментария</p>
+                <div>
+                    <textarea rows="3" cols="80" th:text="*{comment.text}" readonly></textarea>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+</div>
+</body>
+</html>

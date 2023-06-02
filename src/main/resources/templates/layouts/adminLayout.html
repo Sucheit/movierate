@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html decorate="layouts/adminLayout.html" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MovieRate</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+
+</head>
+<body style="background-color:#c2c2d6;">
+<div th:replace="layouts/adminHeader.html :: header">My header will go here!</div>
+
+<section layout:fragment="content">My content will go here!</section>
+
+<div th:replace="layouts/commonFooter.html :: footer">My footer will go here!</div>
+</body>
+<script src="js/scripts.js"></script>
+</html>
