@@ -187,9 +187,9 @@ public class FilmController {
     }
 
     @GetMapping(value = "recommended")
-    public String recommendedFilms(@Valid SearchDto searchDto,
-                                @AuthenticationPrincipal UserDetails user,
-                                Model model) {
+    public String recommendedFilms(
+            @AuthenticationPrincipal UserDetails user,
+            Model model) {
         model.addAttribute("user", user);
         model.addAttribute("films",
                 filmRatingService.getRecommendedFilms(userService.getUserDtoByUsername(user.getUsername()).getId()));

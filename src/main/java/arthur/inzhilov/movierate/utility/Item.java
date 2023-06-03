@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Film {
+public class Item {
 
-    private Long filmId;
+    private Long itemId;
 }

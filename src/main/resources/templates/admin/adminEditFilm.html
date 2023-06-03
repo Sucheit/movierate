@@ -66,35 +66,10 @@
                 <input type="hidden" name="genreId" id="genreId">
             </div>
 
-<!--            <h3>Таблица жанров</h3>-->
-<!--            <table class="table table-striped">-->
-<!--            <thead>-->
-<!--            <tr>-->
-<!--                <th scope="col">Id жанра</th>-->
-<!--                <th scope="col">Название</th>-->
-<!--            </tr>-->
-<!--            </thead>-->
-<!--            <tbody>-->
-<!--            <tr th:each="genre : ${genres}">-->
-<!--                <td th:text="${genre.id}">Id жанра</td>-->
-<!--                <td th:text="${genre.name}">Название</td>-->
-<!--            </tr>-->
-<!--            </tbody>-->
-<!--            </table>-->
-
-
-<!--            <div class="mb-3">-->
-<!--                <label for="genreId" class="form-label">Жанр id</label>-->
-<!--                <input th:field="*{genreId}" type="text" class="form-control" id="genreId"-->
-<!--                       aria-describedby="genreIdHelp">-->
-<!--                <div id="genreDateHelp" class="form-text">Жанр id должен быть из списка</div>-->
-<!--                <p class="alert alert-danger" th:if="${#fields.hasErrors('genreId')}" th:errors="*{genreId}"></p>-->
-<!--            </div>-->
-
             <div th:if="${filmDto.image != null}">
                 <p>Текущий постер</p>
                 <img alt="" th:src="${'data:image/jpeg;base64,'+{filmDto.image}}"
-                     style="width: 400px;height: 500px;" src="">
+                     style="width: 200px;height: 300px;" src="">
             </div>
 
             <input name="image" type="hidden" th:value="${filmDto.image}">

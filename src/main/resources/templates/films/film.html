@@ -8,8 +8,8 @@
     <div align="center" class="mb-3">
 
         <div>
-        <img align="center" alt="" th:src="${'data:image/jpeg;base64,'+{filmEntityCurr.image}}"
-             style="width: 400px;height: 600px;" src="">
+            <img align="center" alt="" th:src="${'data:image/jpeg;base64,'+{filmEntityCurr.image}}"
+                 style="width: 400px;height: 500px;" src="">
         </div>
 
         <table class="table table-striped">
@@ -83,42 +83,46 @@
         <div align="center" class="mb-3">
             <div th:if="${user != null}">
                 <div th:if="${reviewDto == null}">
-                    <form th:action="@{/addReview}" action="#" method="post" th:object="${reviewDtoNew}">
-                        <div>
+                    <div class="col-7">
+                        <form th:action="@{/addReview}" action="#" method="post" th:object="${reviewDtoNew}">
                             <div class="mb-3">
+
                                 <label for="text" class="form-label">Ваш отзыв:</label>
-                                <textarea rows="3" cols="80" th:field="*{text}" class="form-control" id="text"
+                                <textarea rows="3" cols="50" th:field="*{text}" class="form-control" id="text"
                                           aria-describedby="textHelp"></textarea>
                                 <div id="textHelp" class="form-text"></div>
                                 <p class="alert alert-danger" th:if="${#fields.hasErrors('text')}"
                                    th:errors="*{text}"></p>
+
+                                <input type="hidden" name="filmId" th:value="${filmEntityCurr.id}">
+                                <input type="hidden" name="userId" th:value="${user.id}">
                             </div>
-                            <input type="hidden" name="filmId" th:value="${filmEntityCurr.id}">
-                            <input type="hidden" name="userId" th:value="${user.id}">
-                        </div>
-                        <input class="btn btn-primary" type="submit" value="Оставить отзыв">
-                    </form>
+                            <input class="btn btn-primary" type="submit" value="Оставить отзыв">
+                        </form>
+                    </div>
                 </div>
                 <div th:if="${reviewDto != null}">
-                    <form th:action="@{/updateReview}" action="#" method="post" th:object="${reviewDto}">
-                        <div>
-                            <div class="mb-3">
-                                <label for="text2" class="form-label">Ваш отзыв:</label>
-                                <textarea rows="3" cols="80" th:field="*{text}" class="form-control"
-                                          id="text2"
-                                          aria-describedby="textHelp2"></textarea>
-                                <div id="textHelp2" class="form-text"></div>
-                                <p class="alert alert-danger" th:if="${#fields.hasErrors('text')}"
-                                   th:errors="*{text}"></p>
+                    <div class="col-7">
+                        <form th:action="@{/updateReview}" action="#" method="post" th:object="${reviewDto}">
+                            <div>
+                                <div class="mb-3">
+                                    <label for="text2" class="form-label">Ваш отзыв:</label>
+                                    <textarea rows="3" cols="50" th:field="*{text}" class="form-control"
+                                              id="text2"
+                                              aria-describedby="textHelp2"></textarea>
+                                    <div id="textHelp2" class="form-text"></div>
+                                    <p class="alert alert-danger" th:if="${#fields.hasErrors('text')}"
+                                       th:errors="*{text}"></p>
+                                </div>
+                                <input type="hidden" name="id" th:value="${reviewDto.id}">
+                                <input type="hidden" name="filmId" th:value="${filmEntityCurr.id}">
+                                <input type="hidden" name="userId" th:value="${userEntity.id}">
                             </div>
-                            <input type="hidden" name="id" th:value="${reviewDto.id}">
-                            <input type="hidden" name="filmId" th:value="${filmEntityCurr.id}">
-                            <input type="hidden" name="userId" th:value="${userEntity.id}">
-                        </div>
-                        <input type="submit" class="btn btn-primary" value="Отредактировать отзыв">
-                        <button class="btn btn-danger" type="submit" th:formaction="@{/deleteReview}">Удалить отзыв
-                        </button>
-                    </form>
+                            <input type="submit" class="btn btn-primary" value="Отредактировать отзыв">
+                            <button class="btn btn-danger" type="submit" th:formaction="@{/deleteReview}">Удалить отзыв
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -128,15 +132,17 @@
     </div>
     <div align="center" class="mb-3" th:if="${comments.size() != 0}">
         <p>Все Отзывы:</p>
-        <ul class="list-group">
-            <li class="list-group-item list-group-item-dark" th:each="comment : ${comments}">
-                <p style="display: inline-block;" th:text="*{comment.user.username}">Имя пользователя</p>
-                <p style="display: inline-block;" th:text="*{comment.postDate}">Дата комментария</p>
-                <div>
-                    <textarea rows="3" cols="80" th:text="*{comment.text}" readonly></textarea>
-                </div>
-            </li>
-        </ul>
+        <div class="col-7">
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-dark" th:each="comment : ${comments}">
+                    <p style="display: inline-block;" th:text="*{comment.user.username}">Имя пользователя</p>
+                    <p style="display: inline-block;" th:text="*{comment.postDate}">Дата комментария</p>
+                    <div>
+                        <textarea class='form-control' rows="3" cols="50" th:text="*{comment.text}" readonly></textarea>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 
 </div>
