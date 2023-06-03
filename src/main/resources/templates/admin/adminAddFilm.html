@@ -68,7 +68,7 @@
             <div th:if="${filmDto.image != null}">
                 <p>Текущий постер</p>
                 <img alt="" th:src="${'data:image/jpeg;base64,'+{filmDto.image}}"
-                     style="width: 400px;height: 500px;" src="">
+                     style="width: 200px;height: 300px;" src="">
             </div>
 
             <input name="image" type="hidden" th:value="${filmDto.image}">

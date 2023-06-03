@@ -10,14 +10,14 @@ import java.util.Map.Entry;
  */
 public class SlopeOne {
 
-    private static final Map<Film, Map<Film, Double>> diff = new HashMap<>();
-    private static final Map<Film, Map<Film, Integer>> freq = new HashMap<>();
+    private static final Map<Item, Map<Item, Double>> diff = new HashMap<>();
+    private static final Map<Item, Map<Item, Integer>> freq = new HashMap<>();
 
-    private static final Map<User, HashMap<Film, Double>> outputData = new HashMap<>();
+    private static final Map<User, HashMap<Item, Double>> outputData = new HashMap<>();
 
-    private static Set<Film> items = new HashSet<>();
+    private static Set<Item> items = new HashSet<>();
 
-    public static Map<User, HashMap<Film, Double>> slopeOne(Map<User, HashMap<Film, Double>> inputData, Set<Film> newItems) {
+    public static Map<User, HashMap<Item, Double>> slopeOne(Map<User, HashMap<Item, Double>> inputData, Set<Item> newItems) {
         items = newItems;
         buildDifferencesMatrix(inputData);
         predict(inputData);
@@ -30,14 +30,14 @@ public class SlopeOne {
      *
      * @param data existing user data and their items' ratings
      */
-    private static void buildDifferencesMatrix(Map<User, HashMap<Film, Double>> data) {
-        for (HashMap<Film, Double> user : data.values()) {
-            for (Entry<Film, Double> e : user.entrySet()) {
+    private static void buildDifferencesMatrix(Map<User, HashMap<Item, Double>> data) {
+        for (HashMap<Item, Double> user : data.values()) {
+            for (Entry<Item, Double> e : user.entrySet()) {
                 if (!diff.containsKey(e.getKey())) {
                     diff.put(e.getKey(), new HashMap<>());
                     freq.put(e.getKey(), new HashMap<>());
                 }
-                for (Entry<Film, Double> e2 : user.entrySet()) {
+                for (Entry<Item, Double> e2 : user.entrySet()) {
                     int oldCount = 0;
                     if (freq.get(e.getKey()).containsKey(e2.getKey())) {
                         oldCount = freq.get(e.getKey()).get(e2.getKey());
@@ -52,8 +52,8 @@ public class SlopeOne {
                 }
             }
         }
-        for (Film j : diff.keySet()) {
-            for (Film i : diff.get(j).keySet()) {
+        for (Item j : diff.keySet()) {
+            for (Item i : diff.get(j).keySet()) {
                 double oldValue = diff.get(j).get(i);
                 int count = freq.get(j).get(i);
                 diff.get(j).put(i, oldValue / count);
@@ -67,16 +67,16 @@ public class SlopeOne {
      *
      * @param data existing user data and their items' ratings
      */
-    public static void predict(Map<User, HashMap<Film, Double>> data) {
-        HashMap<Film, Double> uPred = new HashMap<>();
-        HashMap<Film, Integer> uFreq = new HashMap<>();
-        for (Film j : diff.keySet()) {
+    public static void predict(Map<User, HashMap<Item, Double>> data) {
+        HashMap<Item, Double> uPred = new HashMap<>();
+        HashMap<Item, Integer> uFreq = new HashMap<>();
+        for (Item j : diff.keySet()) {
             uFreq.put(j, 0);
             uPred.put(j, 0.0);
         }
-        for (Entry<User, HashMap<Film, Double>> e : data.entrySet()) {
-            for (Film j : e.getValue().keySet()) {
-                for (Film k : diff.keySet()) {
+        for (Entry<User, HashMap<Item, Double>> e : data.entrySet()) {
+            for (Item j : e.getValue().keySet()) {
+                for (Item k : diff.keySet()) {
                     try {
                         double predictedValue = diff.get(k).get(j) + e.getValue().get(j);
                         double finalValue = predictedValue * freq.get(k).get(j);
@@ -86,13 +86,13 @@ public class SlopeOne {
                     }
                 }
             }
-            HashMap<Film, Double> clean = new HashMap<>();
-            for (Film j : uPred.keySet()) {
+            HashMap<Item, Double> clean = new HashMap<>();
+            for (Item j : uPred.keySet()) {
                 if (uFreq.get(j) > 0) {
                     clean.put(j, uPred.get(j) / uFreq.get(j));
                 }
             }
-            for (Film j : items) {
+            for (Item j : items) {
                 if (e.getValue().containsKey(j)) {
                     clean.put(j, e.getValue().get(j));
                 } else if (!clean.containsKey(j)) {
