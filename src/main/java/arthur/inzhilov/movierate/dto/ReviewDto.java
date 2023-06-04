@@ -25,7 +25,7 @@ public class ReviewDto {
 
     private UserEntity user;
 
-    private String text = "";
+    private String text;
 
     private String postDate;
 }

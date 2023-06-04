@@ -94,7 +94,9 @@ public class FilmController {
     public String addReview(ReviewDto reviewDto,
                             @AuthenticationPrincipal UserDetails user,
                             Model model) {
-        reviewService.addReview(reviewDto);
+        if (!reviewDto.getText().equals("")) {
+            reviewService.addReview(reviewDto);
+        }
         FilmDto film = filmService.getFilmById(reviewDto.getFilmId());
         FilmRatingEntity filmRatingEntity = null;
         UserDto userDto = null;
@@ -120,7 +122,9 @@ public class FilmController {
     public String updateReview(ReviewDto reviewDto,
                                @AuthenticationPrincipal UserDetails user,
                                Model model) {
-        reviewService.updateReview(reviewDto);
+        if (!reviewDto.getText().equals("")) {
+            reviewService.updateReview(reviewDto);
+        }
         FilmDto filmDto = filmService.getFilmById(reviewDto.getFilmId());
         FilmRatingEntity filmRatingEntity = null;
         UserDto userDto = null;
