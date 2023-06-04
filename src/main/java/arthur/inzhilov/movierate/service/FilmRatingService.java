@@ -24,6 +24,9 @@ import static arthur.inzhilov.movierate.utility.Constants.NUMBER_OF_RECOMMENDED_
 import static arthur.inzhilov.movierate.utility.SlopeOne.slopeOne;
 import static java.util.Map.Entry.comparingByValue;
 
+/**
+ * Класс реализующий бизнес-логику оценок фильмов пользователями
+ */
 @Service
 @RequiredArgsConstructor
 public class FilmRatingService {
@@ -34,6 +37,11 @@ public class FilmRatingService {
 
     private final UserRepository userRepository;
 
+    /**
+     * Нахождение среднего рейтинга фильма по id фильма
+     * @param filmId идентификатор фильма
+     * @return средний рейтинг фильма
+     */
     public String getFilmRatingByFilmId(Long filmId) {
         Double avgRating = filmRatingRepository.getAvgRating(filmId);
         String result;
@@ -45,14 +53,27 @@ public class FilmRatingService {
         return result;
     }
 
+    /**
+     * Нахождение оценки фильма пользователем
+     * @param filmId идентификатор фильма
+     * @param userId идентификатор пользователя
+     * @return сущность рейтинга фильма найденную в базе данных
+     */
     public FilmRatingEntity findByFilmIdAndUserId(Long filmId, Long userId) {
         FilmEntity filmEntity = filmRepository.findById(filmId)
                 .orElseThrow(() -> new NotFoundException("Фильм не найден."));
         UserEntity userEntity = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("Фильм не найден."));
+                .orElseThrow(() -> new NotFoundException("Пользователь не найден."));
         return filmRatingRepository.findByFilmEntityAndUserEntity(filmEntity, userEntity);
     }
 
+    /**
+     * Сохранение и обновление рейтинга в базе данных
+     * @param filmId идентификатор фильма
+     * @param userId идентификатор пользователя
+     * @param rating оценка
+     * @return сущность рейтинга фильма сохраненную в базе данных
+     */
     public FilmRatingEntity saveFilmRating(Long filmId, Long userId, Integer rating) {
         FilmEntity filmEntity = filmRepository.findById(filmId)
                 .orElseThrow(() -> new NotFoundException("Фильм не найден."));
@@ -69,6 +90,11 @@ public class FilmRatingService {
                 .build());
     }
 
+    /**
+     * Получение списка рекомендованных фильмов
+     * @param userId идентификатор пользователя в базе данных
+     * @return список фильмов
+     */
     public List<FilmDto> getRecommendedFilms(Long userId) {
         List<FilmRatingEntity> filmRatingEntities = filmRatingRepository.findAll();
         Set<Long> filmIdsUserRated = filmRatingEntities.stream()
@@ -79,14 +105,10 @@ public class FilmRatingService {
             return Collections.emptyList();
         }
         Map<User, HashMap<Item, Double>> inputData = initializeData(filmRatingEntities);
-        System.out.println("Входные данные: ");
-        printData(inputData);
         Set<Item> items = filmRatingEntities.stream()
                 .map(f -> new Item(f.getFilmEntity().getId()))
                 .collect(Collectors.toSet());
         Map<User, HashMap<Item, Double>> resultData = slopeOne(inputData, items);
-        System.out.println("Выходные данные: ");
-        printData(resultData);
         List<Item> recommendedFilms = new ArrayList<>();
         resultData.get(User.builder().userId(userId).build()).entrySet()
                 .stream()
@@ -101,6 +123,11 @@ public class FilmRatingService {
         return result;
     }
 
+    /**
+     * Преобразование данных полученных из БД для алгоритма рекомендованных фильмов
+     * @param filmRatingEntities список сущностей рейтингов фильмов
+     * @return таблицу данных пользователей, вещей с оценками
+     */
     private Map<User, HashMap<Item, Double>> initializeData(List<FilmRatingEntity> filmRatingEntities) {
         Map<User, HashMap<Item, Double>> data = new HashMap<>();
         Set<User> users = filmRatingEntities.stream()
@@ -116,21 +143,5 @@ public class FilmRatingService {
             data.put(user, newUser);
         });
         return data;
-    }
-
-    private static void print(HashMap<Item, Double> hashMap) {
-        NumberFormat FORMAT = new DecimalFormat("#0.000");
-        hashMap
-                .entrySet()
-                .stream()
-                .sorted(comparingByValue())
-                .forEach(entry -> System.out.println("Фильм:" + entry.getKey().getItemId() + " --> " + FORMAT.format(entry.getValue())));
-    }
-
-    private static void printData(Map<User, HashMap<Item, Double>> data) {
-        data.forEach((key, value) -> {
-            System.out.println("Пользователь " + key.getUserId() + ":");
-            print(data.get(key));
-        });
     }
 }
