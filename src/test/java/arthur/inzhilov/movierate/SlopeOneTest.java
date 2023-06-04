@@ -5,10 +5,13 @@ import arthur.inzhilov.movierate.utility.SlopeOne;
 import arthur.inzhilov.movierate.utility.User;
 import org.junit.jupiter.api.Test;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import static java.util.Map.Entry.comparingByValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SlopeOneTest {
@@ -42,5 +45,21 @@ public class SlopeOneTest {
         double expected = 4.33d;
         Double result = outputData.get(user3).get(item1);
         assertEquals(expected, result, epsilon);
+    }
+
+    private static void print(HashMap<Item, Double> hashMap) {
+        NumberFormat FORMAT = new DecimalFormat("#0.000");
+        hashMap
+                .entrySet()
+                .stream()
+                .sorted(comparingByValue())
+                .forEach(entry -> System.out.println("Фильм:" + entry.getKey().getItemId() + " --> " + FORMAT.format(entry.getValue())));
+    }
+
+    private static void printData(Map<User, HashMap<Item, Double>> data) {
+        data.forEach((key, value) -> {
+            System.out.println("Пользователь " + key.getUserId() + ":");
+            print(data.get(key));
+        });
     }
 }
