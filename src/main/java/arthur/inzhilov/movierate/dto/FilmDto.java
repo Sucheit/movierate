@@ -1,7 +1,6 @@
 package arthur.inzhilov.movierate.dto;
 
 import arthur.inzhilov.movierate.entity.GenreEntity;
-import arthur.inzhilov.movierate.validation.GenreIdValidation;
 import arthur.inzhilov.movierate.validation.ReleaseDateValidation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,7 +34,7 @@ public class FilmDto {
     @Positive(message = "Продолжительность должна быть положительной.")
     private int duration;
 
-    @GenreIdValidation(message = "Неверный Id жанра.")
+//    @GenreIdValidation(message = "Неверный Id жанра.")
     private Long genreId;
 
     private GenreEntity genre;

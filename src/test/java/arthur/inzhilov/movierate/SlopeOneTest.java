@@ -1,8 +1,8 @@
 package arthur.inzhilov.movierate;
 
-import arthur.inzhilov.movierate.utility.Item;
-import arthur.inzhilov.movierate.utility.SlopeOne;
-import arthur.inzhilov.movierate.utility.User;
+import arthur.inzhilov.movierate.service.slopeone.Item;
+import arthur.inzhilov.movierate.service.slopeone.SlopeOne;
+import arthur.inzhilov.movierate.service.slopeone.User;
 import org.junit.jupiter.api.Test;
 
 import java.text.DecimalFormat;

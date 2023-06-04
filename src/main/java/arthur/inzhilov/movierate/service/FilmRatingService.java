@@ -8,20 +8,18 @@ import arthur.inzhilov.movierate.entity.FilmEntity;
 import arthur.inzhilov.movierate.entity.FilmRatingEntity;
 import arthur.inzhilov.movierate.entity.UserEntity;
 import arthur.inzhilov.movierate.exception.NotFoundException;
-import arthur.inzhilov.movierate.utility.Item;
-import arthur.inzhilov.movierate.utility.User;
+import arthur.inzhilov.movierate.service.slopeone.Item;
+import arthur.inzhilov.movierate.service.slopeone.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static arthur.inzhilov.movierate.service.FilmService.mapFilmEntityToFilmDto;
 import static arthur.inzhilov.movierate.utility.Constants.DECIMAL_FORMAT;
 import static arthur.inzhilov.movierate.utility.Constants.NUMBER_OF_RECOMMENDED_FILMS;
-import static arthur.inzhilov.movierate.utility.SlopeOne.slopeOne;
+import static arthur.inzhilov.movierate.service.slopeone.SlopeOne.slopeOne;
 import static java.util.Map.Entry.comparingByValue;
 
 /**

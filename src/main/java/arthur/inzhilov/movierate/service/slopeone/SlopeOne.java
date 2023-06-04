@@ -1,4 +1,4 @@
-package arthur.inzhilov.movierate.utility;
+package arthur.inzhilov.movierate.service.slopeone;
 
 
 import java.util.*;
