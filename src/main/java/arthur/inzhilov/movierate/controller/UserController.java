@@ -26,19 +26,19 @@ public class UserController {
     @GetMapping(value = "/registration")
     public String showRegistrationPage(Model model, @AuthenticationPrincipal UserDetails user) {
         model.addAttribute("user", user);
-        model.addAttribute("userDto", new UserDtoRegistration());
+        model.addAttribute("userDtoRegistration", new UserDtoRegistration());
         return "user/registration.html";
     }
 
     @PostMapping(value = "/addUser")
-    public String addNewUser(@Valid UserDtoRegistration userDto, BindingResult bindingResult, Model model,
+    public String addNewUser(@Valid UserDtoRegistration userDtoRegistration, BindingResult bindingResult, Model model,
                              @AuthenticationPrincipal UserDetails user) {
         model.addAttribute("user", user);
         if (bindingResult.hasErrors()) {
-            model.addAttribute("userDto", userDto);
+            model.addAttribute("userDtoRegistration", userDtoRegistration);
             return "user/registration.html";
         }
-        userService.addUser(userDto);
+        userService.addUser(userDtoRegistration);
         return "user/registered.html";
     }
 
