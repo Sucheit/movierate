@@ -8,6 +8,7 @@ import arthur.inzhilov.movierate.dao.ReviewRepository;
 import arthur.inzhilov.movierate.dao.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,12 +26,14 @@ public class ReviewService {
 
     private final FilmRepository filmRepository;
 
+    @Transactional(readOnly = true)
     public List<ReviewDto> getReviewsByFilmId(Long filmId) {
         return reviewRepository.findByFilmIdOrderByPostDateDesc(filmId).stream()
                 .map(this::mapReviewEntityToReviewDto)
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public void addReview(ReviewDto reviewDto) {
         ReviewEntity reviewEntity = reviewRepository.findByFilmIdAndUserId(reviewDto.getFilmId(), reviewDto.getUserId());
         if (reviewEntity != null) {
@@ -47,6 +50,7 @@ public class ReviewService {
                 .build());
     }
 
+    @Transactional
     public void updateReview(ReviewDto reviewDto) {
         reviewRepository.save(ReviewEntity.builder()
                 .id(reviewRepository.findByFilmIdAndUserId(reviewDto.getFilmId(), reviewDto.getUserId()).getId())
@@ -59,6 +63,7 @@ public class ReviewService {
                 .build());
     }
 
+    @Transactional(readOnly = true)
     public ReviewDto getReviewByFilmIdAndUserId(Long filmId, Long userId) {
         ReviewEntity reviewEntity = reviewRepository.findByFilmIdAndUserId(filmId, userId);
         if (reviewEntity == null) {
@@ -73,6 +78,7 @@ public class ReviewService {
                 .build();
     }
 
+    @Transactional
     public void deleteReviewById(Long commentId) {
         reviewRepository.deleteById(commentId);
     }

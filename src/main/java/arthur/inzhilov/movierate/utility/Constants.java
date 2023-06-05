@@ -3,7 +3,7 @@ package arthur.inzhilov.movierate.utility;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Set;
+import java.util.List;
 
 public class Constants {
 
@@ -11,7 +11,7 @@ public class Constants {
 
     public final static LocalDate MIN_FILM_RELEASE_DATE = LocalDate.of(1895, 12, 28);
 
-    public final static Set<Integer> RATINGS = Set.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+    public final static List<Integer> RATINGS = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 
     public final static DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.#");
 

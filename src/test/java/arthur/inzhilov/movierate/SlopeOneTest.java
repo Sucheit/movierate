@@ -46,20 +46,4 @@ public class SlopeOneTest {
         Double result = outputData.get(user3).get(item1);
         assertEquals(expected, result, epsilon);
     }
-
-    private static void print(HashMap<Item, Double> hashMap) {
-        NumberFormat FORMAT = new DecimalFormat("#0.000");
-        hashMap
-                .entrySet()
-                .stream()
-                .sorted(comparingByValue())
-                .forEach(entry -> System.out.println("Фильм:" + entry.getKey().getItemId() + " --> " + FORMAT.format(entry.getValue())));
-    }
-
-    private static void printData(Map<User, HashMap<Item, Double>> data) {
-        data.forEach((key, value) -> {
-            System.out.println("Пользователь " + key.getUserId() + ":");
-            print(data.get(key));
-        });
-    }
 }

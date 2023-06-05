@@ -12,7 +12,10 @@ import arthur.inzhilov.movierate.service.slopeone.Item;
 import arthur.inzhilov.movierate.service.slopeone.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,6 +43,7 @@ public class FilmRatingService {
      * @param filmId идентификатор фильма
      * @return средний рейтинг фильма
      */
+    @Transactional(readOnly = true)
     public String getFilmRatingByFilmId(Long filmId) {
         Double avgRating = filmRatingRepository.getAvgRating(filmId);
         String result;
@@ -57,6 +61,7 @@ public class FilmRatingService {
      * @param userId идентификатор пользователя
      * @return сущность рейтинга фильма найденную в базе данных
      */
+    @Transactional(readOnly = true)
     public FilmRatingEntity findByFilmIdAndUserId(Long filmId, Long userId) {
         FilmEntity filmEntity = filmRepository.findById(filmId)
                 .orElseThrow(() -> new NotFoundException("Фильм не найден."));
@@ -72,6 +77,7 @@ public class FilmRatingService {
      * @param rating оценка
      * @return сущность рейтинга фильма сохраненную в базе данных
      */
+    @Transactional
     public FilmRatingEntity saveFilmRating(Long filmId, Long userId, Integer rating) {
         FilmEntity filmEntity = filmRepository.findById(filmId)
                 .orElseThrow(() -> new NotFoundException("Фильм не найден."));
@@ -93,6 +99,7 @@ public class FilmRatingService {
      * @param userId идентификатор пользователя в базе данных
      * @return список фильмов
      */
+    @Transactional(readOnly = true)
     public List<FilmDto> getRecommendedFilms(Long userId) {
         List<FilmRatingEntity> filmRatingEntities = filmRatingRepository.findAll();
         Set<Long> filmIdsUserRated = filmRatingEntities.stream()
@@ -103,10 +110,14 @@ public class FilmRatingService {
             return Collections.emptyList();
         }
         Map<User, HashMap<Item, Double>> inputData = initializeData(filmRatingEntities);
+        System.out.println("initial data:");
+        printData(inputData);
         Set<Item> items = filmRatingEntities.stream()
                 .map(f -> new Item(f.getFilmEntity().getId()))
                 .collect(Collectors.toSet());
         Map<User, HashMap<Item, Double>> resultData = slopeOne(inputData, items);
+        System.out.println("result data:");
+        printData(resultData);
         List<Item> recommendedFilms = new ArrayList<>();
         resultData.get(User.builder().userId(userId).build()).entrySet()
                 .stream()
@@ -141,5 +152,21 @@ public class FilmRatingService {
             data.put(user, newUser);
         });
         return data;
+    }
+
+    private static void print(HashMap<Item, Double> hashMap) {
+        NumberFormat FORMAT = new DecimalFormat("#0.000");
+        hashMap
+                .entrySet()
+                .stream()
+                .sorted(comparingByValue())
+                .forEach(entry -> System.out.println("Фильм:" + entry.getKey().getItemId() + " --> " + FORMAT.format(entry.getValue())));
+    }
+
+    private static void printData(Map<User, HashMap<Item, Double>> data) {
+        data.forEach((key, value) -> {
+            System.out.println("Пользователь " + key.getUserId() + ":");
+            print(data.get(key));
+        });
     }
 }

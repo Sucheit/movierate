@@ -4,37 +4,30 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
 <div class="container my-5" layout:fragment="content">
-
     <div align="center" class="mb-3">
-
-        <div>
-            <img align="center" alt="" th:src="${'data:image/jpeg;base64,'+{filmEntityCurr.image}}"
-                 style="width: 400px;height: 500px;" src="">
+        <h1 style="text-align:center;" th:text="${filmEntityCurr.name}">Название</h1>
+        <div class="modal-body row">
+            <div class="col-md-6">
+                <div>
+                    <img align="center" alt="" th:src="${'data:image/jpeg;base64,'+{filmEntityCurr.image}}"
+                         style="width: 400px;height: 500px;" src="">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <ul class="list-group-item list-group-item-dark">
+                    <li class="list-group-item list-group-item-dark" th:text="${filmEntityCurr.description}">Описание
+                    </li>
+                    <li style="text-align:left;" class="list-group-item list-group-item-dark">Жанр: <span
+                            th:text="${filmEntityCurr.genre.name}"></span></li>
+                    <li style="text-align:left;" class="list-group-item list-group-item-dark">Длительность(мин.): <span
+                            th:text="${filmEntityCurr.duration}"></span></li>
+                    <li style="text-align:left;" class="list-group-item list-group-item-dark">Дата выхода: <span
+                            th:text="${filmEntityCurr.releaseDate}"></span></li>
+                    <li style="text-align:left;" class="list-group-item list-group-item-dark">Средний рейтинг: <span
+                            th:object="${rating}" th:text="${rating}"></span></li>
+                </ul>
+            </div>
         </div>
-
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th scope="col">Название</th>
-                <th scope="col">Описание</th>
-                <th scope="col">Жанр</th>
-                <th scope="col">Длительность(мин.)</th>
-                <th scope="col">Дата выхода</th>
-                <th scope="col">Средний рейтинг</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td th:text="${filmEntityCurr.name}">Название</td>
-                <td th:text="${filmEntityCurr.description}">Описание</td>
-                <td th:text="${filmEntityCurr.genre.name}">Жанр</td>
-                <td th:text="${filmEntityCurr.duration}">Длительность(мин.)</td>
-                <td th:text="${filmEntityCurr.releaseDate}">Дата выхода</td>
-                <td th:object="${rating}" th:text="${rating}">Средний рейтинг</td>
-            </tr>
-
-            </tbody>
-        </table>
     </div>
 
     <div align="center" class="mb-3">
@@ -90,7 +83,7 @@
                                 <label for="text" class="form-label">Ваш отзыв:</label>
                                 <textarea rows="3" cols="50" th:field="*{text}" class="form-control" id="text"
                                           aria-describedby="textHelp"></textarea>
-                                <div id="textHelp" class="form-text"></div>
+                                <div id="textHelp" class="form-text">Отзыв не может быть пустым</div>
                                 <p class="alert alert-danger" th:if="${#fields.hasErrors('text')}"
                                    th:errors="*{text}"></p>
 
@@ -110,7 +103,7 @@
                                     <textarea rows="3" cols="50" th:field="*{text}" class="form-control"
                                               id="text2"
                                               aria-describedby="textHelp2"></textarea>
-                                    <div id="textHelp2" class="form-text"></div>
+                                    <div id="textHelp2" class="form-text">Отзыв не может быть пустым</div>
                                     <p class="alert alert-danger" th:if="${#fields.hasErrors('text')}"
                                        th:errors="*{text}"></p>
                                 </div>
