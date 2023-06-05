@@ -43,7 +43,6 @@ public class FilmRatingService {
      * @param filmId идентификатор фильма
      * @return средний рейтинг фильма
      */
-    @Transactional(readOnly = true)
     public String getFilmRatingByFilmId(Long filmId) {
         Double avgRating = filmRatingRepository.getAvgRating(filmId);
         String result;
@@ -61,7 +60,6 @@ public class FilmRatingService {
      * @param userId идентификатор пользователя
      * @return сущность рейтинга фильма найденную в базе данных
      */
-    @Transactional(readOnly = true)
     public FilmRatingEntity findByFilmIdAndUserId(Long filmId, Long userId) {
         FilmEntity filmEntity = filmRepository.findById(filmId)
                 .orElseThrow(() -> new NotFoundException("Фильм не найден."));
@@ -77,7 +75,6 @@ public class FilmRatingService {
      * @param rating оценка
      * @return сущность рейтинга фильма сохраненную в базе данных
      */
-    @Transactional
     public FilmRatingEntity saveFilmRating(Long filmId, Long userId, Integer rating) {
         FilmEntity filmEntity = filmRepository.findById(filmId)
                 .orElseThrow(() -> new NotFoundException("Фильм не найден."));
@@ -99,7 +96,6 @@ public class FilmRatingService {
      * @param userId идентификатор пользователя в базе данных
      * @return список фильмов
      */
-    @Transactional(readOnly = true)
     public List<FilmDto> getRecommendedFilms(Long userId) {
         List<FilmRatingEntity> filmRatingEntities = filmRatingRepository.findAll();
         Set<Long> filmIdsUserRated = filmRatingEntities.stream()

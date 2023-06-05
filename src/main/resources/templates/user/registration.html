@@ -5,15 +5,17 @@
 
 <div layout:fragment="content">
     <div class="container mt-3 mb-3">
+        <h2 style="text-align:center;">Регистрация</h2>
         <div class="mx-auto col-10 col-md-8 col-lg-6">
             <form th:action="@{addUser}" action="#" method="post" th:object="${userDto}">
-                <h2 style="text-align:center;">Регистрация</h2>
+
                 <div class="mb-3">
                     <label for="username" class="form-label">Имя пользователя:</label>
                     <input th:field="*{username}" type="text" class="form-control" id="username"
                            aria-describedby="usernameHelp">
                     <div id="usernameHelp" class="form-text">Имя пользователя должно быть от 3 до 20 символов.</div>
-                    <p class="alert alert-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+                    <p class="alert alert-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
+                       th:errorclass="error"></p>
                 </div>
 
                 <div class="mb-3">
@@ -21,7 +23,8 @@
                     <input th:field="*{email}" type="text" class="form-control" id="email"
                            aria-describedby="emailHelp">
                     <div id="emailHelp" class="form-text"></div>
-                    <p class="alert alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                    <p class="alert alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+                       th:errorclass="error"></p>
                 </div>
 
                 <div class="mb-3">
@@ -29,7 +32,8 @@
                     <input th:field="*{password}" type="password" class="form-control" id="password"
                            aria-describedby="priorityHelp">
                     <div id="passwordHelp" class="form-text">Пароль должен быть от 6 до 20 символов.</div>
-                    <p class="alert alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+                    <p class="alert alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+                       th:errorclass="error"></p>
                 </div>
 
                 <button type="submit" class="btn btn-primary" value="Зарегистрироваться">Зарегистрироваться</button>

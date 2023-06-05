@@ -3,7 +3,6 @@ package arthur.inzhilov.movierate.controller;
 import arthur.inzhilov.movierate.dto.FilmDto;
 import arthur.inzhilov.movierate.dto.SearchDto;
 import arthur.inzhilov.movierate.dto.UserDto;
-import arthur.inzhilov.movierate.entity.UserEntity;
 import arthur.inzhilov.movierate.service.FilmService;
 import arthur.inzhilov.movierate.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -72,17 +71,17 @@ public class AdminController {
             filmDto.setFile(file);
             filmDto.setImage(MultipartFileToImageString(file));
         }
-        model.addAttribute("genres", filmService.getGenres());
-        if (bindingResult.hasErrors()) {
-            return "admin/adminEditFilm.html";
-        }
-        filmService.updateFilm(filmDto);
         UserDto userDto = null;
         if (user != null) {
             userDto = userService.getUserDtoByUsername(user.getUsername());
             model.addAttribute("userEntity", userDto);
         }
         model.addAttribute("user", userDto);
+        model.addAttribute("genres", filmService.getGenres());
+        if (bindingResult.hasErrors()) {
+            return "admin/adminEditFilm.html";
+        }
+        filmService.updateFilm(filmDto);
         return "admin/adminOnEditFilm.html";
     }
 
@@ -141,13 +140,13 @@ public class AdminController {
             filmDto.setFile(file);
             filmDto.setImage(MultipartFileToImageString(file));
         }
+        model.addAttribute("user", user);
         model.addAttribute("genres", filmService.getGenres());
         if (bindingResult.hasErrors()) {
             return "admin/adminAddFilm.html";
         }
         filmDto.setFile(file);
         filmService.addFilm(filmDto);
-        model.addAttribute("user", user);
         return "admin/adminOnAddFilm.html";
     }
 }
