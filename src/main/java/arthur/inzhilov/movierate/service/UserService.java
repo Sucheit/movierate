@@ -29,6 +29,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public UserDto getUserDtoByUsername(String username) {
         return userRepository.findByUsername(username)
                 .map(this::mapUserEntityToUserDto)
@@ -36,6 +37,7 @@ public class UserService {
                         String.format("Пользователя '%s' не существует.", username)));
     }
 
+    @Transactional
     public Long addUser(UserDtoRegistration userDto) {
         UserEntity userEntity = UserEntity.builder()
                 .id(null)

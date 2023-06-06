@@ -27,18 +27,21 @@ public class FilmService {
 
     private final GenreRepository genreRepository;
 
+    @Transactional(readOnly = true)
     public List<FilmDto> getFilms() {
         return filmRepository.findAll().stream()
                 .map(FilmService::mapFilmEntityToFilmDto)
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public FilmDto getFilmById(Long filmId) {
         FilmEntity filmEntity = filmRepository.findById(filmId)
                 .orElseThrow(() -> new NotFoundException(String.format("Фильма '%s' не существует.", filmId)));
         return mapFilmEntityToFilmDto(filmEntity);
     }
 
+    @Transactional
     public void addFilm(FilmDto filmDto) {
         FilmEntity filmEntity = FilmEntity.builder()
                 .id(null)
@@ -57,6 +60,7 @@ public class FilmService {
         filmRepository.save(filmEntity);
     }
 
+    @Transactional
     public void updateFilm(FilmDto filmDto) {
         Optional<FilmEntity> optionalFilmEntity = filmRepository.findById(filmDto.getId());
         if (optionalFilmEntity.isEmpty()) {
@@ -81,16 +85,19 @@ public class FilmService {
         filmRepository.save(filmEntityNew);
     }
 
+    @Transactional
     public void deleteFilm(Long filmId) {
         filmRepository.deleteById(filmId);
     }
 
+    @Transactional(readOnly = true)
     public List<GenreEntity> getGenres() {
         return genreRepository.findAll().stream()
                 .sorted(Comparator.comparing(GenreEntity::getId))
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<FilmDto> findFilmsBySearchTerm(String searchTerm) {
         return filmRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(searchTerm, searchTerm)
                 .stream()

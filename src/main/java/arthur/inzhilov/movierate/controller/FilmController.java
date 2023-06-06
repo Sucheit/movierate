@@ -7,6 +7,7 @@ import arthur.inzhilov.movierate.service.FilmService;
 import arthur.inzhilov.movierate.service.ReviewService;
 import arthur.inzhilov.movierate.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -64,6 +65,7 @@ public class FilmController {
         return "films/film.html";
     }
 
+    @Secured("ROLE_USER")
     @PostMapping(value = "/updateRating")
     public String filmUpdateRating(FilmRatingDto filmRatingDto,
                                    @AuthenticationPrincipal UserDetails user,
@@ -90,11 +92,12 @@ public class FilmController {
         return "films/film.html";
     }
 
+    @Secured("ROLE_USER")
     @PostMapping(value = "/addReview")
     public String addReview(ReviewDto reviewDto,
                             @AuthenticationPrincipal UserDetails user,
                             Model model) {
-        if (!reviewDto.getText().equals("")) {
+        if (!reviewDto.getText().equals("") || new StringBuilder(reviewDto.getText()).length() < 300) {
             reviewService.addReview(reviewDto);
         }
         FilmDto film = filmService.getFilmById(reviewDto.getFilmId());
@@ -118,11 +121,12 @@ public class FilmController {
         return "films/film.html";
     }
 
+    @Secured("ROLE_USER")
     @PostMapping(value = "/updateReview")
     public String updateReview(ReviewDto reviewDto,
                                @AuthenticationPrincipal UserDetails user,
                                Model model) {
-        if (!reviewDto.getText().equals("")) {
+        if (!reviewDto.getText().equals("") || new StringBuilder(reviewDto.getText()).length() < 300) {
             reviewService.updateReview(reviewDto);
         }
         FilmDto filmDto = filmService.getFilmById(reviewDto.getFilmId());
@@ -146,6 +150,7 @@ public class FilmController {
         return "films/film.html";
     }
 
+    @Secured("ROLE_USER")
     @PostMapping(value = "/deleteReview")
     public String deleteReview(ReviewDto reviewDto,
                                @AuthenticationPrincipal UserDetails user,
@@ -190,6 +195,7 @@ public class FilmController {
         return "films/searched.html";
     }
 
+    @Secured("ROLE_USER")
     @GetMapping(value = "recommended")
     public String recommendedFilms(
             @AuthenticationPrincipal UserDetails user,
