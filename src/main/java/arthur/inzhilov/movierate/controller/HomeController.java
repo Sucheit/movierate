@@ -11,6 +11,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(@AuthenticationPrincipal UserDetails user, Model model) {
+        System.out.println(user);
         model.addAttribute("user", user);
         return "home.html";
     }
