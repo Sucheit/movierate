@@ -1,9 +1,34 @@
 <!DOCTYPE html>
 <html layout:decorate="layouts/adminLayout.html"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml">
 <body>
 <div class="container my-5" layout:fragment="content">
-  Фильм успешно добавлен!
+    <div>
+        Фильм успешно добавлен:
+    </div>
+    <div align="center" class="mb-3">
+        <h1 style="text-align:center;" th:text="${film.name}">Название</h1>
+        <div class="modal-body row">
+            <div class="col-md-6">
+                <div>
+                    <img align="center" alt="" th:src="${'data:image/jpeg;base64,'+{film.image}}"
+                         style="width: 400px;height: 500px;" src="">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <ul class="list-group-item list-group-item-dark">
+                    <li class="list-group-item list-group-item-dark" th:text="${film.description}">Описание
+                    </li>
+                    <li style="text-align:left;" class="list-group-item list-group-item-dark">Жанр: <span
+                            th:text="${film.genre.name}"></span></li>
+                    <li style="text-align:left;" class="list-group-item list-group-item-dark">Длительность(мин.): <span
+                            th:text="${film.duration}"></span></li>
+                    <li style="text-align:left;" class="list-group-item list-group-item-dark">Дата выхода: <span
+                            th:text="${film.releaseDate}"></span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

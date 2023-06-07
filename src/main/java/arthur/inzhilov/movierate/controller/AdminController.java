@@ -82,6 +82,7 @@ public class AdminController {
             return "admin/adminEditFilm.html";
         }
         filmService.updateFilm(filmDto);
+        model.addAttribute("film", filmService.getFilmById(filmDto.getId()));
         return "admin/adminOnEditFilm.html";
     }
 
@@ -146,7 +147,8 @@ public class AdminController {
             return "admin/adminAddFilm.html";
         }
         filmDto.setFile(file);
-        filmService.addFilm(filmDto);
+        Long id = filmService.addFilm(filmDto);
+        model.addAttribute("film", filmService.getFilmById(id));
         return "admin/adminOnAddFilm.html";
     }
 }

@@ -9,7 +9,8 @@
 
         <h1 style="text-align:center;">Форма добавления фильма:</h1>
 
-        <form th:action="@{/adminAddFilm}" action="#" method="post" th:object="${filmDto}" enctype="multipart/form-data">
+        <form th:action="@{/adminAddFilm}" action="#" method="post" th:object="${filmDto}"
+              enctype="multipart/form-data">
 
             <input name="id" type="hidden" th:value="${filmDto.id}">
 
@@ -45,7 +46,8 @@
                 <label for="releaseDate" class="form-label">Дата релиза</label>
                 <input th:field="*{releaseDate}" type="text" class="form-control" id="releaseDate"
                        aria-describedby="releaseDateHelp">
-                <div id="releaseDateHelp" class="form-text">Дата должна быть в формате 'дд.MM.гггг', позже 28.12.1895.</div>
+                <div id="releaseDateHelp" class="form-text">Дата должна быть в формате 'дд.MM.гггг', позже 28.12.1895.
+                </div>
                 <p class="alert alert-danger" th:if="${#fields.hasErrors('releaseDate')}"
                    th:errors="*{releaseDate}"></p>
             </div>

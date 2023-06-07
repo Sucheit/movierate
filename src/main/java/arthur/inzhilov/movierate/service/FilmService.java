@@ -42,7 +42,7 @@ public class FilmService {
     }
 
     @Transactional
-    public void addFilm(FilmDto filmDto) {
+    public Long addFilm(FilmDto filmDto) {
         FilmEntity filmEntity = FilmEntity.builder()
                 .id(null)
                 .name(filmDto.getName())
@@ -57,7 +57,7 @@ public class FilmService {
         } else if (!filmDto.getFile().isEmpty()) {
             filmEntity.setImage(MultipartFileToImageString(filmDto.getFile()));
         }
-        filmRepository.save(filmEntity);
+        return filmRepository.save(filmEntity).getId();
     }
 
     @Transactional
