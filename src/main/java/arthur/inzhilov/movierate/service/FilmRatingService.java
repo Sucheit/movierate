@@ -14,15 +14,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static arthur.inzhilov.movierate.service.FilmService.mapFilmEntityToFilmDto;
+import static arthur.inzhilov.movierate.service.slopeone.SlopeOne.slopeOne;
 import static arthur.inzhilov.movierate.utility.Constants.DECIMAL_FORMAT;
 import static arthur.inzhilov.movierate.utility.Constants.NUMBER_OF_RECOMMENDED_FILMS;
-import static arthur.inzhilov.movierate.service.slopeone.SlopeOne.slopeOne;
+import static arthur.inzhilov.movierate.utility.Utility.printData;
 import static java.util.Map.Entry.comparingByValue;
 
 /**
@@ -97,7 +96,7 @@ public class FilmRatingService {
     /**
      * Получение списка рекомендованных фильмов
      * @param userId идентификатор пользователя в базе данных
-     * @return список фильмов
+     * @return список рекомендованных фильмов
      */
     @Transactional(readOnly = true)
     public List<FilmDto> getRecommendedFilms(Long userId) {
@@ -106,9 +105,6 @@ public class FilmRatingService {
                 .filter(filmRatingEntity -> filmRatingEntity.getUserEntity().getId().equals(userId))
                 .map(filmRatingEntity -> filmRatingEntity.getFilmEntity().getId())
                 .collect(Collectors.toSet());
-        if (filmIdsUserRated.size() == 0) {
-            return Collections.emptyList();
-        }
         Map<User, HashMap<Item, Double>> inputData = initializeData(filmRatingEntities);
         System.out.println("initial data:");
         printData(inputData);
@@ -139,8 +135,7 @@ public class FilmRatingService {
      */
     private Map<User, HashMap<Item, Double>> initializeData(List<FilmRatingEntity> filmRatingEntities) {
         Map<User, HashMap<Item, Double>> data = new HashMap<>();
-        Set<User> users = filmRatingEntities.stream()
-                .map(FilmRatingEntity::getUserEntity)
+        Set<User> users = userRepository.findAll().stream()
                 .map(userEntity -> User.builder().userId(userEntity.getId()).build())
                 .collect(Collectors.toSet());
         users.forEach(user -> {
@@ -152,21 +147,5 @@ public class FilmRatingService {
             data.put(user, newUser);
         });
         return data;
-    }
-
-    private static void print(HashMap<Item, Double> hashMap) {
-        NumberFormat FORMAT = new DecimalFormat("#0.000");
-        hashMap
-                .entrySet()
-                .stream()
-                .sorted(comparingByValue())
-                .forEach(entry -> System.out.println("Фильм:" + entry.getKey().getItemId() + " --> " + FORMAT.format(entry.getValue())));
-    }
-
-    private static void printData(Map<User, HashMap<Item, Double>> data) {
-        data.forEach((key, value) -> {
-            System.out.println("Пользователь " + key.getUserId() + ":");
-            print(data.get(key));
-        });
     }
 }

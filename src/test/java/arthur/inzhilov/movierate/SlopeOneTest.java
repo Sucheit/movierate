@@ -5,15 +5,16 @@ import arthur.inzhilov.movierate.service.slopeone.SlopeOne;
 import arthur.inzhilov.movierate.service.slopeone.User;
 import org.junit.jupiter.api.Test;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static java.util.Map.Entry.comparingByValue;
+import static arthur.inzhilov.movierate.utility.Utility.printData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Тесты для {@link SlopeOne}
+ */
 public class SlopeOneTest {
 
     @Test
@@ -41,9 +42,11 @@ public class SlopeOneTest {
         inputData.put(user3, itemsUser3);
         Set<Item> items = Set.of(item1, item2, item3);
         Map<User, HashMap<Item, Double>> outputData = SlopeOne.slopeOne(inputData, items);
-        double epsilon = 0.1d;
+        double epsilon = 0.02d;
         double expected = 4.33d;
         Double result = outputData.get(user3).get(item1);
         assertEquals(expected, result, epsilon);
     }
+
+
 }

@@ -1,5 +1,7 @@
 package arthur.inzhilov.movierate.utility;
 
+import arthur.inzhilov.movierate.service.slopeone.Item;
+import arthur.inzhilov.movierate.service.slopeone.User;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,10 +12,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 import static arthur.inzhilov.movierate.utility.Constants.IMAGE_HEIGHT;
 import static arthur.inzhilov.movierate.utility.Constants.IMAGE_WIDTH;
+import static java.util.Map.Entry.comparingByValue;
 
 public class Utility {
 
@@ -76,5 +83,21 @@ public class Utility {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void print(HashMap<Item, Double> hashMap) {
+        NumberFormat FORMAT = new DecimalFormat("#0.000");
+        hashMap
+                .entrySet()
+                .stream()
+                .sorted(comparingByValue())
+                .forEach(entry -> System.out.println("\t\tФильм:" + entry.getKey().getItemId() + " --> " + FORMAT.format(entry.getValue())));
+    }
+
+    public static void printData(Map<User, HashMap<Item, Double>> data) {
+        data.forEach((key, value) -> {
+            System.out.println("\tПользователь " + key.getUserId() + ":");
+            print(data.get(key));
+        });
     }
 }

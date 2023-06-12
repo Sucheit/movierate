@@ -4,11 +4,8 @@
 <body>
 <div class="container my-5" layout:fragment="content">
 
-    <p th:if=" ${films.size() == 0}">Рекомендаций нет! Вы еще не оценили ни один фильм.</p>
-
-    <div th:if=" ${films.size() != 0}">
-        <h2 style="text-align:center;">Топ 5 рекомендованных вам фильмов!</h2>
-
+    <div>
+        <h2 style="text-align:center;">Рекомендованные вам фильмы!</h2>
         <table class="table table-striped">
             <thead>
             <tr>
