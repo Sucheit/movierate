@@ -34,7 +34,6 @@ public class FilmDto {
     @Positive(message = "Продолжительность должна быть положительной.")
     private int duration;
 
-//    @GenreIdValidation(message = "Неверный Id жанра.")
     private Long genreId;
 
     private GenreEntity genre;

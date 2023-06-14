@@ -35,6 +35,7 @@ public class ReviewEntity {
     private UserEntity user;
 
     @Size(max = 255)
+    @Column(name = "text")
     private String text;
 
     @Column(name = "post_date")

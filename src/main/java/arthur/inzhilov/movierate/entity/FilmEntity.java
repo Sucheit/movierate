@@ -25,14 +25,17 @@ public class FilmEntity {
     private Long id;
 
     @Size(max = 1000)
+    @Column(name = "name")
     private String name;
 
     @Size(max = 1000)
+    @Column(name = "description")
     private String description;
 
     @Column(name = "release_date")
     private LocalDate releaseDate;
 
+    @Column(name = "duration")
     private int duration;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -40,6 +43,6 @@ public class FilmEntity {
     private GenreEntity genre;
 
     @Lob
-    @Column(columnDefinition = "MEDIUMBLOB")
+    @Column(columnDefinition = "MEDIUMBLOB", name = "image")
     private String image;
 }

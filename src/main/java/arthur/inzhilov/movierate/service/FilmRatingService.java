@@ -106,11 +106,13 @@ public class FilmRatingService {
                 .map(filmRatingEntity -> filmRatingEntity.getFilmEntity().getId())
                 .collect(Collectors.toSet());
         Map<User, HashMap<Item, Double>> inputData = initializeData(filmRatingEntities);
+        System.out.println("input data:");
         printData(inputData);
         Set<Item> items = filmRatingEntities.stream()
                 .map(f -> new Item(f.getFilmEntity().getId()))
                 .collect(Collectors.toSet());
         Map<User, HashMap<Item, Double>> resultData = slopeOne(inputData, items);
+        System.out.println("result data:");
         printData(resultData);
         List<Item> recommendedFilms = new ArrayList<>();
         resultData.get(User.builder().userId(userId).build()).entrySet()

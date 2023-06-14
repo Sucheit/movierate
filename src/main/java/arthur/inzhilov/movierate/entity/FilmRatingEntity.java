@@ -32,5 +32,6 @@ public class FilmRatingEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private UserEntity userEntity;
 
+    @Column(name = "rating")
     private Integer rating;
 }

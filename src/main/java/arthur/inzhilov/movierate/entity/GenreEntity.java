@@ -20,5 +20,6 @@ public class GenreEntity {
     @Column(name = "genre_id")
     private Long id;
 
+    @Column(name = "name")
     private String name;
 }
