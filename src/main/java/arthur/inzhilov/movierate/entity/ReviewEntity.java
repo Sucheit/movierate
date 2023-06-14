@@ -34,8 +34,9 @@ public class ReviewEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private UserEntity user;
 
-    @Size(max = 255, message = "Длина отзыва не может быть больше 255 символов.")
+    @Size(max = 255)
     private String text;
 
+    @Column(name = "post_date")
     private LocalDateTime postDate;
 }

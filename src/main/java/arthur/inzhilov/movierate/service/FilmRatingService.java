@@ -106,13 +106,11 @@ public class FilmRatingService {
                 .map(filmRatingEntity -> filmRatingEntity.getFilmEntity().getId())
                 .collect(Collectors.toSet());
         Map<User, HashMap<Item, Double>> inputData = initializeData(filmRatingEntities);
-        System.out.println("initial data:");
         printData(inputData);
         Set<Item> items = filmRatingEntities.stream()
                 .map(f -> new Item(f.getFilmEntity().getId()))
                 .collect(Collectors.toSet());
         Map<User, HashMap<Item, Double>> resultData = slopeOne(inputData, items);
-        System.out.println("result data:");
         printData(resultData);
         List<Item> recommendedFilms = new ArrayList<>();
         resultData.get(User.builder().userId(userId).build()).entrySet()
@@ -129,7 +127,7 @@ public class FilmRatingService {
     }
 
     /**
-     * Преобразование данных полученных из БД для алгоритма рекомендованных фильмов
+     * Преобразование данных полученных из БД для алгоритма Slope one
      * @param filmRatingEntities список сущностей рейтингов фильмов
      * @return таблицу данных пользователей, вещей с оценками
      */

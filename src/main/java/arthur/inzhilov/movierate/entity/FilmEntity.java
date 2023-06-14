@@ -30,6 +30,7 @@ public class FilmEntity {
     @Size(max = 1000)
     private String description;
 
+    @Column(name = "release_date")
     private LocalDate releaseDate;
 
     private int duration;

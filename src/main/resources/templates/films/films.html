@@ -18,16 +18,27 @@
         </thead>
         <tbody>
         <tr th:each="film : ${films}">
-            <td scope="row"><img alt="" th:src="*{'data:image/jpeg;base64,'+{film.image}}" style="width: 150px;height: 200px;" src=""></td>
+            <td scope="row">
+                <div th:if="${film.image.isEmpty()}">
+                    <img align="center" alt="Что-то пошло не так!" style="width: 150px;height: 200px;"
+                         th:src="@{images/Image_not_available.png}" src="">
+                </div>
+                <div th:if="${!film.image.isEmpty()}">
+                    <img alt="" th:src="*{'data:image/jpeg;base64,'+{film.image}}" style="width: 150px;height: 200px;"
+                         src="">
+                </div>
+            </td>
             <td th:text="${film.name}">Название</td>
             <td th:text="${film.description}">Описание</td>
             <td th:text="${film.genre.name}">Жанр</td>
             <td th:text="${film.duration}">Длительность(мин.)</td>
             <td th:text="${film.releaseDate}">Дата выхода</td>
-            <td> <form action="#" method="get" th:action="@{/getFilm}" th:object="${filmDto}">
-                <input name="id" type="hidden" th:value="${film.id}">
-                <button class="btn btn-secondary" type="submit" >Обсудить</button>
-            </form></td>
+            <td>
+                <form action="#" method="get" th:action="@{/getFilm}" th:object="${filmDto}">
+                    <input name="id" type="hidden" th:value="${film.id}">
+                    <button class="btn btn-secondary" type="submit">Обсудить</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>

@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static arthur.inzhilov.movierate.utility.Utility.printData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -47,6 +46,4 @@ public class SlopeOneTest {
         Double result = outputData.get(user3).get(item1);
         assertEquals(expected, result, epsilon);
     }
-
-
 }
