@@ -105,6 +105,9 @@ public class FilmRatingService {
                 .filter(filmRatingEntity -> filmRatingEntity.getUserEntity().getId().equals(userId))
                 .map(filmRatingEntity -> filmRatingEntity.getFilmEntity().getId())
                 .collect(Collectors.toSet());
+        if (filmIdsUserRated.isEmpty()) {
+            return Collections.emptyList();
+        }
         Map<User, HashMap<Item, Double>> inputData = initializeData(filmRatingEntities);
         System.out.println("input data:");
         printData(inputData);

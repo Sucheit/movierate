@@ -4,7 +4,10 @@
 <body>
 <div class="container my-5" layout:fragment="content">
 
-    <div>
+    <div th:if="${films.isEmpty()}">
+        Вы еще не оценили ни один фильм!
+    </div>
+    <div th:if="${!films.isEmpty()}">
         <h2 style="text-align:center;">Рекомендованные вам фильмы!</h2>
         <table class="table table-striped">
             <thead>
